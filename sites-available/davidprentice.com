@@ -6,64 +6,58 @@ server {
 	return 301 https://$server_name$request_uri;
 }
 server {
+	listen 443 ssl http2;
 	server_name www.davidprentice.com davidprentice.com;
 	add_header Strict-Transport-Security "max-age=31536000; includeSubdomains" always;
 	add_header PHPCACHE $upstream_cache_status;
-#	listen 80;
-	listen 443 ssl http2;
 	gzip on;
 	gzip_types text/plain application/javascript application/x-javascript text/javascript text/xml text/css;
 	gzip_min_length 1000;
-        port_in_redirect off;
+    port_in_redirect off;
 	client_max_body_size 16M;	
-	access_log   /var/log/nginx/davidprentice.com.access.log;
-	error_log    /var/log/nginx/davidprentice.com.error.log error;
-#	ssl on;
-#	ssl_certificate /etc/nginx/ssl/davidprentice.com/davidprentice.com.crt;
-#	ssl_certificate_key /etc/nginx/ssl/davidprentice.com/davidprentice.com.key;
-	ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+	access_log /var/log/nginx/davidprentice.com.access.log;
+	error_log /var/log/nginx/davidprentice.com.error.log error;
 	ssl_certificate /etc/letsencrypt/live/www.davidprentice.com/fullchain.pem;
 	ssl_certificate_key /etc/letsencrypt/live/www.davidprentice.com/privkey.pem;
 	ssl_trusted_certificate /etc/letsencrypt/live/www.davidprentice.com/chain.pem;
 	root /home/blaster/www/davidprentice.com/;
 	index index.php;
-	
 	location / {
 		try_files $uri $uri/ /index.php?$args;
 	}
 
 	# Cache static files for as long as possible
-	location ~*.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf|cur)$ {
+	location ~*.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|css|rss|atom|js|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf|cur)$
+	{
         expires max;
         log_not_found off;
         access_log off;
 	}
 	
-	set $skip_cache 0;
+	set $wp_bypass_cache 0;
 	
 	if ($request_method = POST)
 	{
-		set $skip_cache 1;
+		set $wp_bypass_cache 1;
 	}
 	if ($query_string != "")
 	{
-		set $skip_cache 1;
+		set $wp_bypass_cache 1;
 	}
 	if ($request_uri ~* "/phpsysinfo/|/wp-admin/|/xmlrpc.php|/wp-(app|cron|login|register|mail).php|wp-.*.php|/feed/|index.php|wp-comments-popup.php|wp-links-opml.php|wp-locations.php|sitemap(_index)?.xml|[a-z0-9_-]+-sitemap([0-9]+)?.xml")
 	{
-		set $skip_cache 1;
+		set $wp_bypass_cache 1;
 	}
 	if ($http_cookie ~* "comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|wordpress_logged_in")
 	{
-		set $skip_cache 1;
+		set $wp_bypass_cache 1;
 	}		
 
 	# Deny public access to wp-config.php
-	location ~* wp-config.php {
+	location ~* wp-config.php
+	{
 		deny all;
 	}
-	
-
 	location ~ \.php$ {
 		try_files $uri =404;
 		include fastcgi_params;
@@ -72,7 +66,7 @@ server {
 		fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
 		fastcgi_cache cache;
 		fastcgi_cache_valid 200 301 302 10m;   
-		fastcgi_cache_bypass $skip_cache;
-		fastcgi_no_cache $skip_cache; 
-}
+		fastcgi_cache_bypass $wp_bypass_cache;
+		fastcgi_no_cache $wp_bypass_cache;
+    }
 }
