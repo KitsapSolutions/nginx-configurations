@@ -6,7 +6,7 @@ A configuration for an Angular 1.xx main site and a subdirectory with an Angular
 
 Also, configurations for Let's Encrypt.
 
-The Wordpress configuration allows use of SFTP for uploading and updating directly into Wordpress. It also allows use of the Nginx Helper Plugin.
+The Wordpress configuration allows use of SFTP for uploading and updating directly into Wordpress. It also allows use of the Nginx Helper plugin.
 
 I should also note that these configurations are secure and score A+ at [SSL Labs Test](https://www.ssllabs.com/ssltest/index.html).
 
