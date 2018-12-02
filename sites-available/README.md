@@ -1,6 +1,6 @@
 # Notes on naming.
 
-I prefer to name variable and method with what the effect is going to be.
+I prefer to name variables and methods with what the stated effect is going to be.
 
 I the first version of the cache busting I named it "skip_cache". Good enough for that time.
 
