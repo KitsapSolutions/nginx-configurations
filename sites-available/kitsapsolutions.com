@@ -1,9 +1,9 @@
 server {
     listen 80;
     server_name kitsapsolutions.com www.kitsapsolutions.com;
-	access_log off;
-	error_log off;
-	return 301 https://$server_name$request_uri;
+    access_log off;
+    error_log off;
+    return 301 https://$server_name$request_uri;
 }
 server {
     server_name kitsapsolutions.com www.kitsapsolutions.com;
