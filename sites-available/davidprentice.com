@@ -13,8 +13,8 @@ server {
 	gzip on;
 	gzip_types text/plain application/javascript application/x-javascript text/javascript text/xml text/css;
 	gzip_min_length 1000;
-    port_in_redirect off;
-	client_max_body_size 16M;	
+	port_in_redirect off;
+	client_max_body_size 16M;
 	access_log /var/log/nginx/davidprentice.com.access.log;
 	error_log /var/log/nginx/davidprentice.com.error.log error;
 	ssl_certificate /etc/letsencrypt/live/www.davidprentice.com/fullchain.pem;
