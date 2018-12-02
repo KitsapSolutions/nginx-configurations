@@ -6,21 +6,21 @@ server {
     return 301 https://$server_name$request_uri;
 }
 server {
+    listen 443 ssl http2;
     server_name kitsapsolutions.com www.kitsapsolutions.com;
-	listen 443 ssl http2;
-	ssl_certificate /etc/letsencrypt/live/kitsapsolutions.com/fullchain.pem;
-	ssl_certificate_key /etc/letsencrypt/live/kitsapsolutions.com/privkey.pem;
-	ssl_trusted_certificate /etc/letsencrypt/live/kitsapsolutions.com/chain.pem;
-	add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";
+    ssl_certificate /etc/letsencrypt/live/kitsapsolutions.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/kitsapsolutions.com/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/kitsapsolutions.com/chain.pem;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";
 
-	root /home/blaster/www/kitsapsolutions.com;
-	index index.html;
-	
-	location ^~ /bidboard/ {
-	try_files $uri $uri/ /bidboard/index.html;        
-	}
-	
-	location / {
-	try_files $uri $uri/ /index.html;
-	}
+    root /home/blaster/www/kitsapsolutions.com;
+    index index.html;
+
+    location ^~ /bidboard/ {
+    try_files $uri $uri/ /bidboard/index.html;
+    }
+
+    location / {
+    try_files $uri $uri/ /index.html;
+    }
 }
