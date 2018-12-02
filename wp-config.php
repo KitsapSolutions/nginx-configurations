@@ -34,7 +34,7 @@ define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 
 /* SFTP parameters */
-/* These parameters make is possible to upload directly into Wordpress via SFTP */
+/* These parameters make is possible to upload directly into Wordpress via SFTP. */
 define('FTP_PUBKEY','/home/example/.ssh/id_rsa.pub');
 define('FTP_PRIKEY','/home/example/.ssh/id_rsa');
 define('FTP_USER','ftp_user_name');
